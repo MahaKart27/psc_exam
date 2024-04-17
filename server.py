@@ -1,9 +1,3 @@
-# from flask import Flask, render_template, request, redirect, url_for, flash, session
-# import psycopg2
-
-# app = Flask(__name__)
-# app.secret_key = 'C7mV_?<W;uT=fT%"cjM7>SrB'
-
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import psycopg2
 from bcrypt import hashpw, gensalt, checkpw
