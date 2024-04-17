@@ -211,6 +211,7 @@
 
 // export default App;
 import React, { useState, useEffect } from 'react';
+import './App.css'
 import {
   BrowserRouter as Router,
   Route,
@@ -456,39 +457,40 @@ function App() {
     <Router>
       <div className="App">
         <div className="form-container">
-          <Switch>
-            <Route path="/login">
+          <Routes>
+            <Route path="/login" element={
               <LoginForm
                 handleLogin={handleLogin}
                 setShowLogin={setShowLogin}
                 setUsername={setUsername}
                 setPassword={setPassword}
               />
-            </Route>
-            <Route path="/signup">
+            } />
+            <Route path="/signup" element={
               <SignupForm
                 handleSignup={handleSignup}
                 setShowLogin={setShowLogin}
                 setUsername={setUsername}
                 setPassword={setPassword}
               />
-            </Route>
-            <Route path="/teacher-dashboard">
+            } />
+            <Route path="/teacher-dashboard" element={
               <TeacherDashboard
                 handleCreateCourse={handleCreateCourse}
                 setCourseName={setCourseName}
                 setCourseDescription={setCourseDescription}
               />
-            </Route>
-            <Route path="/student-dashboard">
+            } />
+            <Route path="/student-dashboard" element={
               <StudentDashboard courses={courses} handleEnrollCourse={handleEnrollCourse} />
-            </Route>
-            <Redirect to="/login" />
-          </Switch>
+            } />
+            <Route path="/" element={<Navigate to="/login" />} /> {/* Default redirect */}
+          </Routes>
         </div>
       </div>
     </Router>
   );
 }
+
 
 export default App;
