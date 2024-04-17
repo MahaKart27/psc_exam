@@ -1,0 +1,85 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fbe7; /* Light green background */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9fbe7; /* Light green background */
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.form {
+  background-color: #ffffff; /* White background */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  max-width: 90%;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.error {
+  color: #d32f2f; /* Red color for errors */
+  margin-bottom: 15px;
+}
+
+button {
+  background-color: #4caf50; /* Green color for buttons */
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.message {
+  color: #43a047; /* Dark green color for success messages */
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}

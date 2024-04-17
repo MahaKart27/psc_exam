@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, session
+from flask import Flask, request, jsonify, session, redirect
 import psycopg2
 from flask_session import Session
 from flask_cors import CORS
@@ -37,6 +37,32 @@ with conn.cursor() as cursor:
     """)
     conn.commit()
     print("Table 'users' created successfully")
+
+# Create courses table if not exists
+with conn.cursor() as cursor:
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS courses (
+            id SERIAL PRIMARY KEY,
+            course_name VARCHAR(100) NOT NULL,
+            course_description TEXT,
+            teacher_username VARCHAR(50)
+        );
+    """)
+    conn.commit()
+    print("Table 'courses' created successfully")
+
+# Create student_courses table if not exists
+with conn.cursor() as cursor:
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS student_courses (
+            id SERIAL PRIMARY KEY,
+            student_username VARCHAR(50) NOT NULL,
+            course_id INTEGER NOT NULL,
+            FOREIGN KEY (course_id) REFERENCES courses(id)
+        );
+    """)
+    conn.commit()
+    print("Table 'student_courses' created successfully")
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -87,6 +113,50 @@ def login():
             return jsonify({'success': True, 'role': user_data[1]}), 200
         else:
             return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
+
+@app.route('/create-course', methods=['POST'])
+def create_course():
+    if 'username' not in session or session['role'] != 'teacher':
+        return jsonify({'success': False, 'message': 'Unauthorized'}), 401
+    
+    data = request.json
+    course_name = data.get('course_name')
+    course_description = data.get('course_description')
+    
+    if not course_name or not course_description:
+        return jsonify({'success': False, 'message': 'Course name and description are required'}), 400
+    
+    with conn.cursor() as cursor:
+        cursor.execute("INSERT INTO courses (course_name, course_description, teacher_username) VALUES (%s, %s, %s)", (course_name, course_description, session['username']))
+        conn.commit()
+    
+    return jsonify({'success': True, 'message': 'Course created successfully'}), 201
+
+@app.route('/courses', methods=['GET'])
+def get_courses():
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT * FROM courses")
+        courses = cursor.fetchall()
+    
+    course_list = [{'id': course[0], 'course_name': course[1], 'course_description': course[2]} for course in courses]
+    return jsonify(course_list), 200
+
+@app.route('/enroll-course', methods=['POST'])
+def enroll_course():
+    if 'username' not in session or session['role'] != 'student':
+        return jsonify({'success': False, 'message': 'Unauthorized'}), 401
+    
+    data = request.json
+    course_id = data.get('course_id')
+    
+    if not course_id:
+        return jsonify({'success': False, 'message': 'Course ID is required'}), 400
+    
+    with conn.cursor() as cursor:
+        cursor.execute("INSERT INTO student_courses (student_username, course_id) VALUES (%s, %s)", (session['username'], course_id))
+        conn.commit()
+    
+    return jsonify({'success': True, 'message': 'Enrolled in course successfully'}), 200
 
 @app.route('/logout')
 def logout():

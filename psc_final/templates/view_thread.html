@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>View Thread</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>{{ thread[1] }}</h1>
+        <p>{{ thread[2] }}</p>
+        <p>Created by: {{ thread[3] }} | Created at: {{ thread[5] }}</p>
+
+        <h2 class="mt-5">Replies</h2>
+        {% for reply in replies %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text">{{ reply[1] }}</p>
+                    <p class="card-subtitle text-muted">Replied by: {{ reply[2] }} | Created at: {{ reply[4] }}</p>
+                </div>
+            </div>
+        {% endfor %}
+
+        <h2 class="mt-5">Reply to Thread</h2>
+        <form action="{{ url_for('create_reply', thread_id=thread[0]) }}" method="post">
+            <div class="form-group">
+                <textarea name="content" placeholder="Enter your reply" class="form-control"></textarea>
+            </div>
+            <input type="submit" value="Reply" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

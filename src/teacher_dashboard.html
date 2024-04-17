@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h3>Teacher Dashboard</h3>
+    <h4>Create Course</h4>
+    <form id="courseCreationForm">
+        <div class="input-group">
+            <label for="course_name">Course Name:</label>
+            <input type="text" id="course_name" name="course_name" required />
+        </div>
+        <div class="input-group">
+            <label for="course_description">Description:</label>
+            <textarea id="course_description" name="course_description" required></textarea>
+        </div>
+        <button type="submit">Create Course</button>
+    </form>
+    <div id="coursesList">
+        <h4>Enrolled Students:</h4>
+        <ul id="enrolledStudents">
+            <!-- Dynamic content will be populated here -->
+        </ul>
+    </div>
+</body>
+</html>
