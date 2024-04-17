@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome Student!</h1>
+        
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2 class="mt-5">Courses</h2>
+        <ul class="list-group">
+            {% for course in courses %}
+                <li class="list-group-item">
+                    {{ course[0] }} - {{ course[1] }} 
+                    <form action="/enroll_course" method="post" style="display:inline;">
+                        <input type="hidden" name="course_name" value="{{ course[0] }}">
+                        <button type="submit" class="btn btn-success">Enroll</button>
+                    </form>
+                    <form action="/drop_course/{{ course[0] }}" method="post" style="display:inline;">
+                        <input type="submit" value="Drop Course" class="btn btn-danger">
+                    </form>
+                    <a href="{{ url_for('course_discussion', course_name=course[0]) }}" class="btn btn-info">Discussion Forum</a>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <ul class="list-group">
+            {% for course in enrolled_courses %}
+                <li class="list-group-item">
+                    {{ course[0] }} - {{ course[1] }} 
+                    <a href="{{ url_for('course_discussion', course_name=course[0]) }}" class="btn btn-info">Discussion Forum</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <a href="/logout" class="btn btn-danger mt-5">Logout</a>
+    </div>
+</body>
+</html>

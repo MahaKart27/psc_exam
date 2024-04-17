@@ -3,12 +3,12 @@
     "development"
   ],
   "hints": {
-    "meta-viewport": "off",
-    "axe/structure": [
+    "axe/language": [
       "default",
       {
-        "list": "off"
+        "html-has-lang": "off"
       }
-    ]
+    ],
+    "meta-viewport": "off"
   }
 }
