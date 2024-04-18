@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Enrollments</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Enrollments for {{ course_name }}</h1>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Course Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for enrollment in enrollments %}
+                    <tr>
+                        <td>{{ enrollment[0] }}</td>
+                        <td>{{ enrollment[1] }}</td>
+                        <td>
+                            <!-- Approve Form -->
+                            <form action="{{ url_for('approve_enrollment', course_name=course_name, student_name=enrollment[0]) }}" method="post">
+                                <div class="form-group">
+                                    <label for="approve_email">Student Email:</label>
+                                    <input type="email" class="form-control" id="approve_email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="approve_message">Message:</label>
+                                    <textarea class="form-control" id="approve_message" name="message" rows="2" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success">Approve</button>
+                            </form>
+                            
+                            <!-- Reject Form -->
+                            <form action="{{ url_for('reject_enrollment', course_name=course_name, student_name=enrollment[0]) }}" method="post">
+                                <div class="form-group mt-2">
+                                    <label for="reject_email">Student Email:</label>
+                                    <input type="email" class="form-control" id="reject_email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reject_message">Message:</label>
+                                    <textarea class="form-control" id="reject_message" name="message" rows="2" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+</body>
+</html>

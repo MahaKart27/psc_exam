@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Payment</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Make Payment</h1>
+
+        <form action="{{ url_for('payment', course_name=course_name, student_name=student_name, billing_amount=billing_amount) }}" method="post">
+            <!-- ... (rest of the form fields) -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="course_name">Course Name:</label>
+                <input type="text" class="form-control" id="course_name" name="course_name" value="{{ course_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="student_name">Student Name:</label>
+                <input type="text" class="form-control" id="student_name" name="student_name" value="{{ student_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="billing_amount">Billing Amount:</label>
+                <input type="number" class="form-control" id="billing_amount" name="billing_amount" value="{{ billing_amount }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="payment_option">Payment Option:</label>
+                <select class="form-control" id="payment_option" name="payment_option" required>
+                    <option value="full">Full Payment</option>
+                    <option value="emi">EMI</option>
+                </select>
+            </div>
+            <div id="payment_details" style="display:none;">
+                <!-- Payment Details (Card, Wallet, UPI) will be displayed here based on the payment method selected -->
+            </div>
+
+            <div class="form-group">
+                <label for="payment_method">Payment Method:</label>
+                <select class="form-control" id="payment_method" name="payment_method" required>
+                    <option value="card">Card Payment</option>
+                    <option value="wallet">Wallet Payment</option>
+                    <option value="upi">UPI Payment</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Pay</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('payment_method').addEventListener('change', function() {
+            const paymentDetails = document.getElementById('payment_details');
+            
+            if (this.value === 'emi') {
+                paymentDetails.style.display = 'none';
+            } else {
+                paymentDetails.style.display = 'block';
+                // Here, you can dynamically load the relevant payment details fields based on the selected payment method
+            }
+        });
+    </script>
+</body>
+</html>

@@ -23,10 +23,14 @@
             {% for course in courses %}
                 <li class="list-group-item">
                     {{ course[0] }} - {{ course[1] }} 
-                    <form action="/enroll_course" method="post" style="display:inline;">
-                        <input type="hidden" name="course_name" value="{{ course[0] }}">
-                        <button type="submit" class="btn btn-success">Enroll</button>
-                    </form>
+                    {% if course[0] not in enrolled_courses %}
+                        <form action="/enroll_course" method="post" style="display:inline;">
+                            <input type="hidden" name="course_name" value="{{ course[0] }}">
+                            <button type="submit" class="btn btn-success" name="enroll_button">Enroll</button>
+                        </form>
+                    {% else %}
+                        <span class="text-muted">Enrolled (Waiting for Approval)</span>
+                    {% endif %}
                     <form action="/drop_course/{{ course[0] }}" method="post" style="display:inline;">
                         <input type="submit" value="Drop Course" class="btn btn-danger">
                     </form>
@@ -35,11 +39,24 @@
             {% endfor %}
         </ul>
         
+        <h2 class="mt-5">Enrolled Courses</h2>
         <ul class="list-group">
             {% for course in enrolled_courses %}
                 <li class="list-group-item">
                     {{ course[0] }} - {{ course[1] }} 
                     <a href="{{ url_for('course_discussion', course_name=course[0]) }}" class="btn btn-info">Discussion Forum</a>
+                    {% if course[0] in approved_courses %}
+                        {% if course[0] in paid_courses %}
+                            <span class="text-success">Paid</span>
+                        {% else %}
+                            <form action="{{ url_for('payment', course_name=course[0], student_name=session['username'], billing_amount=1000) }}" method="post" style="display:inline;">
+                                <input type="hidden" name="course_name" value="{{ course[0] }}">
+                                <button type="submit" class="btn btn-primary" name="pay_button">Pay</button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <span class="text-muted">Payment (Pending Approval)</span>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
